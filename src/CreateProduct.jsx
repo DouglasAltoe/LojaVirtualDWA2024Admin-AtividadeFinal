@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import ProductForm from './ProductForm';
-import { useState } from 'react';
+import { useEffect, useState } from "react";
 import api from "./axiosApi";
 import FormButtons from './FormButtons';
 import handleChange from './handleChange';
@@ -13,6 +13,26 @@ const CreateProduct = () => {
     const [loading, setLoading] = useState(false);
     const [file, setFile] = useState(null);
     const navigate = useNavigate();
+    const [categories, setCategories] = useState([]);
+
+    const loadCategories = () => {
+        setLoading(true);
+        const categoriesEndpoint = "admin/obter_categorias";
+        api.get(categoriesEndpoint)
+            .then((response) => {
+                setCategories(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    }
+
+    useEffect(() => {
+        loadCategories();
+    }, []);
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -25,6 +45,7 @@ const CreateProduct = () => {
         if (file) {
             formData.append("imagem", file);
         }
+        console.log(formData)
         await api.postForm(insertProductEndpoint, formData, {
             headers: { "Content-Type": "multipart/form-data" },
         })
@@ -58,7 +79,7 @@ const CreateProduct = () => {
                 <h1>Inclusão de Produto</h1>
             </div>
             <form onSubmit={handleSubmit} noValidate autoComplete='off' className='mb-3'>
-                <ProductForm handleChange={localHandleChange} inputs={inputs} errors={errors} handleFileChange={handleFileChange} />
+                <ProductForm handleChange={localHandleChange} inputs={inputs} errors={errors} handleFileChange={handleFileChange} categories={categories} />
                 <FormButtons cancelTarget="/products" />
             </form>
             {loading && <Loading />}

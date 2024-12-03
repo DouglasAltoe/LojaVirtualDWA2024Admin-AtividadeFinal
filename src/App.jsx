@@ -9,6 +9,11 @@ import EditProduct from "./EditProduct";
 import Users from "./Users";
 import Authorization from "./Authorization";
 import CreateProduct from "./CreateProduct";
+import Categories from "./Categories";
+import CreateCategory from "./CreateCategory";
+import EditCategory from "./EditCategory";
+
+
 
 const App = () => {
     return (
@@ -22,6 +27,12 @@ const App = () => {
                     <Route path="/products/create" element={<Authorization><CreateProduct /></Authorization>} />
                     <Route path="/orders" element={<Authorization><Orders /></Authorization>} />
                     <Route path="/orders/:id" element={<Authorization><OrderDetails /></Authorization>} />
+                    <Route path="/categories" element={<Authorization><Categories /></Authorization>} />
+                    <Route path="/categories/create" element={<Authorization><CreateCategory/></Authorization>} /> 
+                    <Route path="/categories/:id" element={<Authorization><EditCategory /></Authorization>} />
+
+
+
                 </Route>
                 <Route path="*" element={<NotFound />} />
             </Routes>

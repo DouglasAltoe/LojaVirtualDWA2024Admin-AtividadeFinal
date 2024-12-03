@@ -3,7 +3,7 @@ import CleaveInput from "./CleaveInput"
 import FormInput from "./FormInput"
 import FormTextarea from "./FormTextarea"
 
-const ProductForm = ({ handleChange, handleFileChange, inputs, errors }) => {
+const ProductForm = ({ handleChange, handleFileChange, inputs, errors, categories }) => {
     return (
         <>
             <div className="row">
@@ -39,6 +39,24 @@ const ProductForm = ({ handleChange, handleFileChange, inputs, errors }) => {
                         accept="image/*"
                     />
                     {errors?.imagem && <div className="invalid-feedback">{errors.imagem}</div>}
+                </div>
+
+                <div className="col-12 mb-3">
+                    <label htmlFor="categoria" className="form-label">Categoria</label>
+                    <select
+                        name="categoria"
+                        className={`form-select ${errors?.categoria ? 'is-invalid' : ''}`}
+                        value={inputs?.categoria || ""} 
+                        onChange={handleChange}
+                    >
+                        <option value="">Selecione uma categoria</option>
+                        {categories && categories.map((category) => (
+                            <option key={category.id} value={category.id}>
+                                {category.nome}
+                            </option>
+                        ))}
+                    </select>
+                    {errors?.categoria && <div className="invalid-feedback">{errors.categoria}</div>}
                 </div>
             </div>
         </>
